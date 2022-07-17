@@ -1,6 +1,7 @@
 package com.manong.config.security.handler;
 
 import com.alibaba.fastjson.JSON;
+import com.manong.config.security.exception.CustomerAuthenticationException;
 import com.manong.utils.Result;
 import com.manong.utils.ResultCode;
 import org.springframework.security.authentication.*;
@@ -28,6 +29,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         ServletOutputStream outputStream = response.getOutputStream();
 //        定义变量，保存异常信息
         String message = null;
+        int code = 500;
 //        判断异常类型
         if (exception instanceof AccountExpiredException) {
             message = "账户过期，登陆失败！";
@@ -41,11 +43,14 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
             message = "账户被锁定，登陆失败！";
         }else if(exception instanceof InternalAuthenticationServiceException){
             message = "账户不存在，登陆失败！";
+        }else if(exception instanceof CustomerAuthenticationException){
+            message = exception.getMessage();
+            code = 600;
         }else{
             message = "登陆失败";
         }
 //        将结果转换为JSON格式
-        String result = JSON.toJSONString(Result.error().code(ResultCode.ERROR).message(message));
+        String result = JSON.toJSONString(Result.error().code(code).message(message));
 //        将结果写入输出流输出
         outputStream.write(result.getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
