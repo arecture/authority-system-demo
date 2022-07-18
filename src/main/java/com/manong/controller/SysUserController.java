@@ -1,20 +1,30 @@
 package com.manong.controller;
 
 import com.manong.config.redis.RedisService;
+import com.manong.entity.Permission;
+import com.manong.entity.User;
+import com.manong.entity.UserInfo;
 import com.manong.utils.JwtUtils;
+import com.manong.utils.MenuTree;
 import com.manong.utils.Result;
+import com.manong.vo.RouterVo;
 import com.manong.vo.TokenVo;
 import io.jsonwebtoken.Jwts;
+import lombok.val;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName SysUserController
@@ -69,6 +79,52 @@ public class SysUserController {
 //            创建tokenVo对象
         TokenVo tokenVo = new TokenVo(expireTime,newToken);
         return Result.ok(tokenVo).message("token刷新成功");
+    }
+
+    /**
+     * 查询用户信息
+     * @return
+     */
+    @GetMapping("/getInfo")
+    public Result getInfo(){
+//        从Spring security上下文获取用户信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        判断是否是空
+        if(authentication == null){
+            return Result.error().message("用户查询失败");
+        }
+//        获取用户信息
+        User user = (User) authentication.getPrincipal();
+//        获取用户权限信息
+        List<Permission> permissionList = user.getPermissionList();
+//        获取权限编码
+        Object[] roles = permissionList.stream().filter(Objects::nonNull).map(Permission::getCode).toArray();
+//        创建用户信息
+        UserInfo userInfo = new UserInfo(user.getId(),user.getNickName(),user.getAvatar(),null,roles);
+        return Result.ok(userInfo).message("用户查询成功");
+    }
+
+    /**
+     * 获取登录用户的菜单数据
+     * @return
+     */
+    @GetMapping("/getMenuList")
+    public Result getMenuList(){
+//        从Spring security上下文获取用户信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        获取用户信息
+        User user = (User) authentication.getPrincipal();
+//        获取用户权限信息
+        List<Permission> permissionList = user.getPermissionList();
+//        筛选当前用户拥有的菜单数据
+        List<Permission> collect = permissionList.stream()
+//                2代表按钮,不筛选按钮
+                .filter(item -> item != null && item.getType() != 2)
+                .collect(Collectors.toList());
+//        生成路由信息
+        List<RouterVo> routerVoList = MenuTree.makeRouter(collect, 0L);
+//        返回信息
+        return Result.ok(routerVoList).message("菜单数据获取成功");
     }
 
 }
