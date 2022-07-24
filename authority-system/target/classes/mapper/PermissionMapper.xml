@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.manong.dao.PermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.manong.entity.Permission">
+        <id column="id" property="id" />
+        <result column="label" property="label" />
+        <result column="parent_id" property="parentId" />
+        <result column="parent_name" property="parentName" />
+        <result column="code" property="code" />
+        <result column="path" property="path" />
+        <result column="name" property="name" />
+        <result column="url" property="url" />
+        <result column="type" property="type" />
+        <result column="icon" property="icon" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+        <result column="order_num" property="orderNum" />
+        <result column="is_delete" property="isDelete" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, label, parent_id, parent_name, code, path, name, url, type, icon, create_time, update_time, remark, order_num, is_delete
+    </sql>
+    <select id="findPermissionListByUserId" resultType="com.manong.entity.Permission">
+        SELECT DISTINCT t5.id,t5.parent_id,t5.label,t5.`code`,t5.url,t5.type,t5.icon,t5.remark,t5.path,t5.`name`
+        FROM sys_user t1
+            LEFT JOIN sys_user_role t2 ON t2.user_id = t1.id
+            LEFT JOIN sys_role t3 ON t3.id = t2.role_id
+            LEFT JOIN sys_role_permission t4 ON t4.role_Id = t3.id
+            LEFT JOIN sys_permission t5 ON t5.id = t4.permission_Id
+        WHERE t1.id = #{userId}
+        ORDER BY t5.id
+    </select>
+
+</mapper>
