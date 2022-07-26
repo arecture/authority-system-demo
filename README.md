@@ -31,18 +31,16 @@
 
 1、这是登录页面，进行token的验证，任何操作都需要带着token
 
-![登陆界面](D:\project\authority-system\image\登陆界面.png)
-
-
+![登陆界面](https://github.com/arecture/authority-system-demo/blob/main/image/%E7%99%BB%E9%99%86%E7%95%8C%E9%9D%A2.png)
 
 2、这是管理员页面（管理员权限），可以对其他用户进行权限控制，部门、人员增删
 
-![管理员页面](D:\project\authority-system\image\管理员页面.png)
+![管理员页面](https://github.com/arecture/authority-system-demo/blob/main/image/%E7%AE%A1%E7%90%86%E5%91%98%E9%A1%B5%E9%9D%A2.png)
 
 3、这是李四（普通用户权限），进可以对系统管理进行操作
 
-![普通用户页面](D:\project\authority-system\image\普通用户页面.png)
+![普通用户页面](https://github.com/arecture/authority-system-demo/blob/main/image/%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E9%A1%B5%E9%9D%A2.png)
 
 4、这是部门管理的页面，可以对部门进行增删改
 
-![部门增删改页面](D:\project\authority-system\image\部门增删改页面.png)
+![部门增删改页面](https://github.com/arecture/authority-system-demo/blob/main/image/%E9%83%A8%E9%97%A8%E5%A2%9E%E5%88%A0%E6%94%B9%E9%A1%B5%E9%9D%A2.png)
