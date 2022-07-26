@@ -43,12 +43,12 @@
             >编辑</el-button
           >
           <el-button
-            size="mini"
+            icon="el-icon-close"
             type="danger"
-            icon="el-icon-delete-solid"
+            size="small"
             @click="handleDelete(scope.row)"
-            >删除</el-button
-          >
+            >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -202,12 +202,20 @@ export default {
         //如果验证通过
         if (valid) {
           // 发送添加请求
-          let res = await departmentApi.addDept(this.dept)
+          let res = null
+          // 判断当前是新增还是修改(判断当前dept的id是否为空)
+          if(this.dept.id === ""){
+            // 发送新增请求
+            res = await departmentApi.addDept(this.dept)
+          }else{
+            // 发送修改请求
+            res = await departmentApi.updateDept(this.dept)
+          }
           if(res.success){
             // 提示成功
             this.$message.success(res.message)
             // 刷新数据
-            this.search
+            this.search()
             //关闭窗口
             this.deptDialog.visible = false;
           }else{
@@ -230,13 +238,52 @@ export default {
       this.parentDialog.visible = false;
     },
     /**
+     * 编辑部门
+     */
+    handleEdit(row){
+      // 数据回显
+      this.$objCopy(row,this.dept)
+      // 设置窗口标题
+      this.deptDialog.title = "编辑部门"
+      // 显示窗口
+      this.deptDialog.visible = true
+    },
+    /**
+     * 删除部门
+     */
+    async handleDelete(row){
+      // 查询部门下是否有子部门或用户
+      let result = await departmentApi.checkDepartment({ id: row.id });
+      // 判断是否可以删除
+      if (!result.success) {
+        //提示不能删除
+        this.$message.warning(result.message);
+      } else {
+        //确认是否删除
+        let confirm =await this.$myconfirm("确定要删除该数据吗?");
+        if (confirm) {
+          //发送删除请求
+          let res = await departmentApi.deleteById({ id: row.id });
+          //判断是否成功
+          if (res.success) {
+            //成功提示
+            this.$message.success(res.message);
+            //刷新
+            this.search();
+          } else {
+            //失败提示
+            this.$message.error(res.message);
+          }
+        }
+      }
+    },
+    /**
      * 打开所属部门的窗口
      */
     async openSelectDeptWindow() {
       this.parentDialog.visible = true;
       // 查询所属部门列表
       let res = await departmentApi.getParentTreeList();
-      console.log('res', res);
       // 判断是否成功
       if (res.success) {
         this.treeList = res.data;

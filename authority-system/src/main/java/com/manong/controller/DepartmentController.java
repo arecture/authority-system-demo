@@ -61,7 +61,7 @@ public class DepartmentController {
      * @param department
      * @return
      */
-    @PostMapping("/update")
+    @PutMapping("/update")
     public Result update(@RequestBody Department department){
         if(departmentService.updateById(department)){
             return Result.ok().message("部门修改成功");
@@ -74,14 +74,15 @@ public class DepartmentController {
      * @param id
      * @return
      */
-    @GetMapping("/check{id}")
+    @GetMapping("/check/{id}")
     public Result check(@PathVariable Long id){
-//        创建条件构造器对象
-        QueryWrapper<Department> queryWrapper = new QueryWrapper<Department>();
-        queryWrapper.eq("pid",id);
 //        判断数量是否大于0
-        if (departmentService.count(queryWrapper) > 0) {
+        if (departmentService.hasChildrenOfDepartment(id)) {
             return Result.exist().message("该部门下存在子部门，无法删除");
+        }
+//        调用查询部门下是否有用户
+        if (departmentService.hasUserOfDepartment(id)) {
+            return Result.exist().message("该部门下存在用户，无法删除");
         }
         return Result.ok();
     }
