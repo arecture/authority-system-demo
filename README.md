@@ -37,7 +37,7 @@
 
 ![管理员页面](https://github.com/arecture/authority-system-demo/blob/main/image/%E7%AE%A1%E7%90%86%E5%91%98%E9%A1%B5%E9%9D%A2.png)
 
-3、这是李四（普通用户权限），进可以对系统管理进行操作
+3、这是李四（普通用户权限），仅可以对系统管理进行操作
 
 ![普通用户页面](https://github.com/arecture/authority-system-demo/blob/main/image/%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E9%A1%B5%E9%9D%A2.png)
 
