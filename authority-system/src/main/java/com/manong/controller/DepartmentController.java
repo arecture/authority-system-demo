@@ -89,7 +89,7 @@ public class DepartmentController {
     /**
      * 部门删除方法
      * @param id
-     * @return
+     * @return 
      */
     @DeleteMapping("/delete/{id}")
     public Result delete(@PathVariable Long id){

@@ -63,4 +63,10 @@ public class Department implements Serializable {
      */
     @TableField(exist = false)
     private List<Department> children = new ArrayList<>();
+
+    /**
+     * 是否展开
+     */
+    @TableField(exist = false)
+    private Boolean open;
 }
