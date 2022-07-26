@@ -26,3 +26,23 @@
 - JavaScript
 - Vue
 - Element UI
+
+## 截图与讲解
+
+1、这是登录页面，进行token的验证，任何操作都需要带着token
+
+![登陆界面](D:\project\authority-system\image\登陆界面.png)
+
+
+
+2、这是管理员页面（管理员权限），可以对其他用户进行权限控制，部门、人员增删
+
+![管理员页面](D:\project\authority-system\image\管理员页面.png)
+
+3、这是李四（普通用户权限），进可以对系统管理进行操作
+
+![普通用户页面](D:\project\authority-system\image\普通用户页面.png)
+
+4、这是部门管理的页面，可以对部门进行增删改
+
+![部门增删改页面](D:\project\authority-system\image\部门增删改页面.png)

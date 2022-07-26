@@ -28,6 +28,11 @@ Vue.prototype.$myconfirm = myconfirm;
 import resetForm from '@/utils/resetForm'
 Vue.prototype.$resetForm = resetForm;
 
+//导入表单回显脚本
+import objCopy from '@/utils/objCopy'
+Vue.prototype.$objCopy = objCopy;
+
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
