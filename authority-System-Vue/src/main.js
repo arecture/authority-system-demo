@@ -24,6 +24,10 @@ import * as filters from './filters' // global filters
 import myconfirm from '@/utils/myconfirm'
 Vue.prototype.$myconfirm = myconfirm;
 
+//导入清空表单信息组件脚本
+import resetForm from '@/utils/resetForm'
+Vue.prototype.$resetForm = resetForm;
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
