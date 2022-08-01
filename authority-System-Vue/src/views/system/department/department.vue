@@ -33,7 +33,7 @@
       <el-table-column prop="parentName" label="所属部门" />
       <el-table-column prop="phone" label="部门电话" />
       <el-table-column prop="address" label="部门地址" />
-      <el-table-column label="操作">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"

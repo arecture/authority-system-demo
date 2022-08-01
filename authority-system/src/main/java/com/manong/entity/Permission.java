@@ -112,7 +112,6 @@ public class Permission implements Serializable {
     /**
      * 用于判断菜单是否展开
      */
-
     @TableField(exist = false)
     private boolean open;
 
