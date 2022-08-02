@@ -67,7 +67,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
         Permission permission = new Permission();
         permission.setId(0L);
         permission.setParentId(-1L);
-        permission.setName("顶级菜单");
+        permission.setLabel("顶级菜单");
         permissionList.add(permission);
 //        生成菜单数据
         List<Permission> menuTree = MenuTree.makeMenuTree(permissionList,-1L);
