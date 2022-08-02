@@ -53,7 +53,7 @@
       </el-table-column>
     </el-table>
     <!-- 添加和修改窗口 -->
-    <system-diglog
+    <system-dialog
       :title="deptDialog.title"
       :visible="deptDialog.visible"
       :width="deptDialog.width"
@@ -91,9 +91,9 @@
           </el-form-item>
         </el-form>
       </div>
-    </system-diglog>
+    </system-dialog>
     <!-- 选择所属部门的窗口 -->
-    <system-diglog
+    <system-dialog
       :title="parentDialog.title"
       :visible="parentDialog.visible"
       :width="parentDialog.width"
@@ -125,17 +125,17 @@
           </div>
         </el-tree>
       </div>
-    </system-diglog>
+    </system-dialog>
   </el-main>
 </template>
 
 <script>
 // 导入department脚本文件
 import departmentApi from '@/api/department';
-// 导入SystemDiglog组件
-import SystemDiglog from '@/components/system/SystemDiglog.vue';
+// 导入SystemDialog组件
+import SystemDialog from '@/components/system/SystemDialog.vue';
 export default {
-  components: { SystemDiglog },
+  components: { SystemDialog },
   name: 'department',
   data() {
     return {
@@ -301,14 +301,6 @@ export default {
       //当点击树节点时，赋予选中的值
       this.dept.pid = data.id;
       this.dept.parentName = data.departmentName;
-    },
-    /**
-     * 点击树节点+-号折叠展开事件
-     */
-    openBtn(data) {
-      //修改折叠展开状态
-      data.open = !data.open;
-      this.$refs.parentTree.store.nodesMap[data.id].expanded = !data.open;
     },
     /**
      * 打开添加部门窗口
