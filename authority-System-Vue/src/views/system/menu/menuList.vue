@@ -51,14 +51,14 @@
             type="primary"
             icon="el-icon-edit"
             size="small"
-            @click="editMenu(scope.row)"
+            @click="handleEidt(scope.row)"
             >编辑
           </el-button>
           <el-button
             type="danger"
             size="small"
             icon="el-icon-delete"
-            @click="deleteMenu(scope.row)"
+            @click="handleDelete(scope.row)"
             >删除
           </el-button>
         </template>
@@ -187,14 +187,14 @@ import menuApi from '@/api/menu';
 import SystemDialog from '@/components/system/SystemDialog.vue';
 
 //导入自定义图标组件
-import MyIcon from '@/components/system/MyIcon.vue'
+import MyIcon from '@/components/system/MyIcon.vue';
 
 export default {
   name: 'menuList',
   //注册组件
   components: {
     SystemDialog,
-    MyIcon,
+    MyIcon
   },
   data() {
     return {
@@ -244,7 +244,7 @@ export default {
         children: 'children',
         label: 'label'
       },
-      parentMenuList: [], //所属菜单列表
+      parentMenuList: [] //所属菜单列表
     };
   },
   // 初始化时调用
@@ -306,7 +306,7 @@ export default {
     /**
      * 设置选择的图标
      */
-    setIcon(icon){
+    setIcon(icon) {
       this.menu.icon = icon;
     },
     // 打开新增窗口
@@ -314,9 +314,9 @@ export default {
       this.$resetForm('menuForm', this.menu); //清空表单数据
       this.menuDialog.title = '新增菜单'; //设置窗口标题
       this.menuDialog.visible = true; //显示窗口
-      this.$$nextTick(() =>{
-        this.$$refs.child.userChooseIcon = ""
-      })//清空菜单图标
+      this.$$nextTick(() => {
+        this.$$refs.child.userChooseIcon = '';
+      }); //清空菜单图标
     },
     /**
      * 关闭取消按钮事件
@@ -328,11 +328,73 @@ export default {
      * 确认按钮事件
      */
     onConfirm() {
-      this.$refs.menuForm.validate((valid) => {
+      this.$refs.menuForm.validate(async (valid) => {
         if (valid) {
-          this.menuDialog.visible = false;
+          let res = null;
+          // 判断是新增操作还是修改操作
+          if (this.menu.id === '') {
+            // 发送添加请求
+            res = await menuApi.addMenu(this.menu);
+          } else {
+            // 发送修改请求
+            res = await menuApi.updateMenu(this.menu);
+          }
+          // 判断是否成功
+          if (res.success) {
+            // 提示成功
+            this.$message.success(res.message);
+            // 刷新数据
+            this.search();
+            // 关闭窗口
+            this.menuDialog.visible = false;
+          } else {
+            // 提示失败
+            this.$message.error(res.message);
+          }
         }
       });
+    },
+    /**
+     * 打开编辑菜单窗口
+     */
+    handleEidt(row) {
+      // 数据回显
+      this.$objCopy(row, this.menu);
+      //设置弹框属性
+      this.menuDialog.title = '编辑菜单';
+      this.menuDialog.visible = true;
+      this.$nextTick(() => {
+        this.$refs.child.userChooseIcon = row.icon //菜单图标回显
+      })
+    },
+    /**
+     * 删除菜单
+     */
+    async handleDelete(row){
+      // 判断是否存在子菜单
+      let result = await menuApi.checkPermission({ id: row.id });
+      // 判断是否可以删除
+      if (!result.success) {
+        //提示不能删除
+        this.$message.warning(result.message);
+      } else {
+        //确认是否删除
+        let confirm = await this.$myconfirm("确定要删除该数据吗?");
+        if (confirm) {
+          //发送删除请求
+          let res = await menuApi.deleteById({ id: row.id });
+          //判断是否成功
+          if (res.success) {
+            //成功提示
+            this.$message.success(res.message);
+            //刷新
+            this.search();
+          } else {
+            //失败提示
+            this.$message.error(res.message);
+          }
+        }
+      }
     }
   }
 };
