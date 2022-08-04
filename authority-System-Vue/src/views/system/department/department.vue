@@ -12,7 +12,7 @@
         <el-button type="primary" icon="el-icon-search" @click="search()"
           >查询</el-button
         >
-        <el-button icon="el-icon-refresh-right">重置</el-button>
+        <el-button icon="el-icon-refresh-right" @click="resetValue()">重置</el-button>
         <el-button type="success" icon="el-icon-plus" @click="openAddWindow()"
           >新增</el-button
         >
@@ -322,7 +322,16 @@ export default {
       if (res.success) {
         this.tableData = res.data;
       }
-    }
+    },
+    /**
+     * 重置查询条件
+     */
+    resetValue() {
+      // 清空数据
+      this.searchModel.departmentName = ""
+      // 查询
+      this.search()
+    },
   }
 };
 </script>
