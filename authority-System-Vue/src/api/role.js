@@ -56,3 +56,11 @@ export async function deleteRole(params) {
 export async function getAssignTree(params){
   return await http.get("/api/role/getAssignPermissionTree",params);
 }
+
+/**
+* 分配权限
+* @returns
+*/
+export async function assignSave(params){
+  return await http.post("/api/role/saveRoleAssign",params);
+}

@@ -111,8 +111,7 @@ public class RoleController {
      */
     @PostMapping("/saveRoleAssign")
     public Result saveRoleAssign(@RequestBody RolePermissionDTO rolePermissionDTO) {
-        if (roleService.saveRolePermission(rolePermissionDTO.getRoleId(),
-                rolePermissionDTO.getList())) {
+        if (roleService.saveRolePermission(rolePermissionDTO.getRoleId(), rolePermissionDTO.getList())) {
             return Result.ok().message("权限分配成功");
         } else {
             return Result.error().message("权限分配失败");

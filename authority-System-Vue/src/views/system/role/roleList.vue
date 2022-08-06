@@ -151,7 +151,8 @@ import {
   updateRole,
   checkRole,
   deleteRole,
-  getAssignTree
+  getAssignTree,
+  assignSave
 } from '@/api/role';
 //导入对话框组件
 import SystemDialog from '@/components/system/SystemDialog.vue';
@@ -305,35 +306,38 @@ export default {
      * 分配权限
      */
     async assignRole(row) {
-      // 构建查询参数
+      this.roleId = row.id;
+      //构建参数
       let params = {
-        rowId: row.id, //角色id
-        userId: this.$store.getters.userId //用户id
+        roleId: row.id,
+        userId: this.$store.getters.userId
       };
-      // 发送查询分配菜单的请求
+      //发送查询请求
       let res = await getAssignTree(params);
+      //判断是否成功
       if (res.success) {
-        // 获取当前登录用户所用有的菜单权限
+        //获取当前登录用户拥有的所有权限
         let permissionList = res.data.permissionList;
-        // 获取当前被分配的已拥有的菜单权限
-        let { checkList } = res.data;
-        // 判断是否菜单最后一级
+        //获取当前被分配的角色已经拥有的权限信息
+        let checkList = res.data.checkList;
+        //判断当前菜单是否是末级
         let { setLeaf } = leafUtils();
-        // 设置权限菜单列表
+        //设置权限菜单列表
         let newPermissionList = setLeaf(permissionList);
-        // 设置树节点数据
+        //设置树节点菜单数据
         this.assignTreeData = newPermissionList;
-        // 回调延迟到下一次dom更新后执行，在修改数据后立即调用该方法，等待dom元素更新
+        //将回调延迟到下次DOM更新循环之后执行,在修改数据之后立即使用它,然后等待DOM更新。
         this.$nextTick(() => {
+          //获取树菜单的节点数据
           let nodes = this.$refs.assignTree.children;
-
-          // 设置子节点
+          //设置子节点
           this.setChild(nodes, checkList);
         });
       }
-      // 设置窗口标题
-      this.assignDialog.title = `给【${row.roleName}】分配权限`;
+      //显示窗口
       this.assignDialog.visible = true;
+      //设置窗口标题
+      this.assignDialog.title = `给【${row.roleName}】分配权限`;
     },
     /**
      * 设置子节点
@@ -374,7 +378,31 @@ export default {
     /**
      * 分配权限窗口确认事件
      */
-    async onAssignConfirm() {},
+    async onAssignConfirm() {
+      //获取选中的节点key
+      let ids = this.$refs.assignTree.getCheckedKeys();
+      //获取选中节点的父节点id
+      let pids = this.$refs.assignTree.getHalfCheckedKeys();
+      //组装选中的节点ID数据
+      let listId = ids.concat(pids);
+      //组装参数
+      let params = {
+        roleId: this.roleId,
+        list: listId
+      };
+      //发送请求
+      let res = await assignSave(params);
+      //判断是否成功
+      if (res.success) {
+        //关闭窗口
+        this.assignDialog.visible = false;
+        //提示成功
+        this.$message.success(res.message);
+      } else {
+        //提示失败
+        this.$message.error(res.data);
+      }
+    },
     // 打开添加窗口
     openAddWindow() {
       // 清空表单数据
