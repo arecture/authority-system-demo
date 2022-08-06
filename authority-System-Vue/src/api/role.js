@@ -48,3 +48,11 @@ export async function deleteRole(params) {
  export async function checkRole(params) {
   return await http.getRestApi("/api/role/check",params)
 }
+
+/**
+* 查询分配权限树列表
+* @returns
+*/
+export async function getAssignTree(params){
+  return await http.get("/api/role/getAssignPermissionTree",params);
+}

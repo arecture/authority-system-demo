@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 @Transactional
@@ -66,5 +67,21 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         baseMapper.deleteRolePermissionByRoleId(id);
 //        删除角色
         return baseMapper.deleteById(id)>0;
+    }
+
+    /**
+     * 保存角色权限关系
+     *
+     * @param roleId
+     * @param permissionIds
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public boolean saveRolePermission(Long roleId, List<Long> permissionIds) {
+        //删除该角色对应的权限信息
+        baseMapper.deleteRolePermissionByRoleId(roleId);
+        //保存角色权限
+        return baseMapper.saveRolePermission(roleId,permissionIds)>0;
     }
 }

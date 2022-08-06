@@ -3,9 +3,12 @@ package com.manong.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.manong.dto.RolePermissionDTO;
 import com.manong.entity.Role;
+import com.manong.service.PermissionService;
 import com.manong.service.RoleService;
 import com.manong.utils.Result;
+import com.manong.vo.RolePermissionVo;
 import com.manong.vo.query.RoleQueryVo;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +20,8 @@ public class RoleController {
 
     @Resource
     RoleService roleService;
+    @Resource
+    PermissionService permissionService;
 
     /**
      * 查询角色列表
@@ -80,6 +85,38 @@ public class RoleController {
             return Result.exist().message("该角色已分配给其他用户，无法删除");
         }
         return Result.ok();
+    }
+
+    /**
+     * 分配权限-查询权限树数据
+     *
+     * @param userId
+     * @param roleId
+     * @return
+     * */
+
+    @GetMapping("/getAssignPermissionTree")
+    public Result getAssignPermissionTree(Long userId, Long roleId) {
+        //调用查询权限树数据的方法
+        RolePermissionVo permissionTree = permissionService.findPermissionTree(userId, roleId);
+        //返回数据
+        return Result.ok(permissionTree);
+    }
+
+    /**
+     * 分配权限-保存权限数据
+     *
+     * @param rolePermissionDTO
+     * @return
+     */
+    @PostMapping("/saveRoleAssign")
+    public Result saveRoleAssign(@RequestBody RolePermissionDTO rolePermissionDTO) {
+        if (roleService.saveRolePermission(rolePermissionDTO.getRoleId(),
+                rolePermissionDTO.getList())) {
+            return Result.ok().message("权限分配成功");
+        } else {
+            return Result.error().message("权限分配失败");
+        }
     }
 }
 
