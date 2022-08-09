@@ -44,3 +44,17 @@
 4、这是部门管理的页面，可以对部门进行增删改
 
 ![部门增删改页面](https://github.com/arecture/authority-system-demo/blob/main/image/%E9%83%A8%E9%97%A8%E5%A2%9E%E5%88%A0%E6%94%B9%E9%A1%B5%E9%9D%A2.png)
+
+
+5、这是用户管理的页面，可以对用户进行增删改，可以给本角色权限内的用户进行分配权限
+
+![用户管理页面](https://github.com/arecture/authority-system-demo/blob/main/image/%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E9%A1%B5%E9%9D%A2.png)
+
+
+6、这是角色管理的页面，管理员可以对所有人的角色进行增删改，其他用户只能对本角色所创建的角色进行增删改
+
+![角色管理页面](https://github.com/arecture/authority-system-demo/blob/main/image/%E8%A7%92%E8%89%B2%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2.png)
+
+7、这是菜单管理的页面，可以对菜单进行增删改，可以给角色进行菜单权限分配
+
+![菜单管理页面](https://github.com/arecture/authority-system-demo/blob/main/image/%E8%8F%9C%E5%8D%95%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2.png)
