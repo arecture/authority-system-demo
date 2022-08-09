@@ -48,7 +48,7 @@
 
 5、这是用户管理的页面，可以对用户进行增删改，可以给本角色权限内的用户进行分配权限
 
-![用户管理页面](https://github.com/arecture/authority-system-demo/blob/main/image/%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E9%A1%B5%E9%9D%A2.png)
+![用户管理页面](https://github.com/arecture/authority-system-demo/blob/main/image/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E9%A1%B5%E9%9D%A2.png)
 
 
 6、这是角色管理的页面，管理员可以对所有人的角色进行增删改，其他用户只能对本角色所创建的角色进行增删改
