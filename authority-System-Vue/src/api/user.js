@@ -41,5 +41,13 @@ export default {
   */
   async getUserList(params) {
     return await http.get("/api/user/list", params);
+  },
+  /**
+  * 添加用户
+  * @param params
+  * @returns
+  */
+  async addUser(params) {
+    return await http.post("/api/user/add", params);
   }
 }
